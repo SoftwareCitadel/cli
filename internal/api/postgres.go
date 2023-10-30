@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/util"
 )
 
 // CreatePostgresToProject attaches a postgres instance to a project

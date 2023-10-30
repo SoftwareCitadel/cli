@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"citadel/internal/api"
+	"citadel/internal/auth"
+	"citadel/internal/tui"
+	"citadel/internal/util"
 	bspinner "github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/softwarecitadel/cli/internal/api"
-	"github.com/softwarecitadel/cli/internal/auth"
-	"github.com/softwarecitadel/cli/internal/tui"
-	"github.com/softwarecitadel/cli/internal/util"
 	"github.com/spf13/cobra"
 )
 

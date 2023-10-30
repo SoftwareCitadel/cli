@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/util"
 	"github.com/spf13/cobra"
 )
 

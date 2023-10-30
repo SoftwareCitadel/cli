@@ -1,4 +1,4 @@
-module github.com/softwarecitadel/cli
+module citadel
 
 go 1.19
 

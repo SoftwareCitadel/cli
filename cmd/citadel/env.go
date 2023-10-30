@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"citadel/internal/api"
+	"citadel/internal/cli"
+	"citadel/internal/tui"
+	"citadel/internal/util"
 	"github.com/charmbracelet/bubbles/table"
-	"github.com/softwarecitadel/cli/internal/api"
-	"github.com/softwarecitadel/cli/internal/cli"
-	"github.com/softwarecitadel/cli/internal/tui"
-	"github.com/softwarecitadel/cli/internal/util"
 	"github.com/spf13/cobra"
 )
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/util"
 )
 
 type Project struct {

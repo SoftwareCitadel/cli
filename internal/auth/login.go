@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/softwarecitadel/cli/internal/api"
+	"citadel/internal/api"
 )
 
 type AuthenticationSessionResponse struct {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/softwarecitadel/cli/internal/api"
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/api"
+	"citadel/internal/util"
 )
 
 type CheckAuthResponse struct {

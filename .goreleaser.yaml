@@ -7,7 +7,8 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-  - binary: "citadel"
+  - id: citadel
+    binary: citadel
     env:
       - CGO_ENABLED=0
     goos:
@@ -15,7 +16,7 @@ builds:
       - windows
       - darwin
     ldflags:
-      - -X 'github.com/softwarecitadel/cli/internal/api.ApiBaseUrl=https://console.softwarecitadel.com'
+      - -X 'citadel/internal/api.ApiBaseUrl=https://console.softwarecitadel.com'
 
 archives:
   - format: tar.gz

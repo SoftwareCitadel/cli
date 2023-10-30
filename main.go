@@ -1,6 +1,6 @@
 package main
 
-import "github.com/softwarecitadel/cli/cmd/citadel"
+import "citadel/cmd/citadel"
 
 func main() {
 	citadel.Execute()

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/softwarecitadel/cli/internal/auth"
+	"citadel/internal/auth"
 	"github.com/spf13/cobra"
 )
 

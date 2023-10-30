@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"citadel/internal/api"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/softwarecitadel/cli/internal/api"
 )
 
 func newChooseApplicationPromptModel(projectSlug string) SelectModel {

@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
+	"citadel/internal/util"
 	"github.com/alevinval/sse/pkg/eventsource"
-	"github.com/softwarecitadel/cli/internal/util"
 )
 
 func DeployFromTarball(tarball io.ReadCloser, projectId string, applicationId string) error {

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/softwarecitadel/cli/internal/auth"
-	"github.com/softwarecitadel/cli/internal/cli"
-	"github.com/softwarecitadel/cli/internal/tui"
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/auth"
+	"citadel/internal/cli"
+	"citadel/internal/tui"
+	"citadel/internal/util"
 	"github.com/spf13/cobra"
 )
 

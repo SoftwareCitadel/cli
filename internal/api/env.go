@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/softwarecitadel/cli/internal/util"
+	"citadel/internal/util"
 )
 
 func RetrieveEnvironmentVariables(
