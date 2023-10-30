@@ -14,8 +14,8 @@ builds:
       - linux
       - windows
       - darwin
-    flags:
-      - "-ldflags=-X 'github.com/softwarecitadel/cli/internal/api.ApiBaseUrl=https://console.softwarecitadel.com'"
+    ldflags:
+      - -X 'github.com/softwarecitadel/cli/internal/api.ApiBaseUrl=https://console.softwarecitadel.com'
 
 archives:
   - format: tar.gz
