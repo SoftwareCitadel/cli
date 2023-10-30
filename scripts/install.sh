@@ -7,9 +7,6 @@ main() {
   latest_version=$(echo "$response" | grep -m 1 '"name":' | awk -F'"' '{print $4}')
   os=$(uname -s)
   arch=$(uname -m)
-  if [ "$os" = "Darwin" ]; then
-    arch="all"
-  fi
   version=${1:-$latest_version}
 
   citadel_dir="${CITADEL_DIR:-$HOME/.citadel}"
@@ -20,27 +17,32 @@ main() {
 
 	mkdir -p "$bin_dir"
 	mkdir -p "$tmp_dir"
-
-  download_url="https://citadel/releases/download/$version/cli_${os}_$arch.tar.gz"
-	curl -q --fail --location --progress-bar --output "$tmp_dir/citadel.tar.gz" "$download_url"
+  
+  download_url="https://github.com/softwarecitadel/cli/releases/download/$version/cli_${os}_$arch.tar.gz"
+	echo "Downloading $download_url..."
+  curl -q --fail --location --progress-bar --output "$tmp_dir/citadel.tar.gz" "$download_url"
 	tar -C "$tmp_dir" -xzf "$tmp_dir/citadel.tar.gz"
 	chmod +x "$tmp_dir/citadel"
-	mv "$tmp_dir/citadel" "$exe"@
+	mv "$tmp_dir/citadel" "$exe"
 	rm "$tmp_dir/citadel.tar.gz"
 
-	echo "Software Citadel CLI was installed successfully to $exe"
+	echo "Software Citadel CLI was installed successfully to $exe."
 
 	if command -v citadel >/dev/null; then
-		echo "Run 'citadel --help' to get started"
+		echo "Run \`citadel auth login\` to get started."
 	else
 		case $SHELL in
 		/bin/zsh) shell_profile=".zshrc" ;;
 		*) shell_profile=".bash_profile" ;;
 		esac
-		echo "Manually add the directory to your \$HOME/$shell_profile (or similar)"
-		echo "  export CITADEL_INSTALL=\"$CITADEL_DIR\""
-		echo "  export PATH=\"\$CITADEL_INSTALL/bin:\$PATH\""
-		echo "Run '$exe --help' to get started"
+
+    echo "\n# Software Citadel CLI" >> "$HOME/$shell_profile"
+    echo "export CITADEL_INSTALL=\"$citadel_dir\"" >> "$HOME/$shell_profile"
+    echo "export PATH=\"\$CITADEL_INSTALL/bin:\$PATH\"" >> "$HOME/$shell_profile"
+
+    echo "Open a new terminal or run 'source $HOME/$shell_profile' to start using Software Citadel CLI"
+
+		echo "Then, run \`citadel auth login\` to get started."
 	fi
 }
 
