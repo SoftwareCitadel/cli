@@ -16,16 +16,16 @@ const (
 )
 
 func main() {
-	err := update(version)
+	err := update()
 	if err != nil {
 		fmt.Printf("error occurred while updating binary: %v\n", err)
 		os.Exit(1)
 	}
 
-	citadel.Execute()
+	citadel.Execute(version)
 }
 
-func update(version string) error {
+func update() error {
 	latest, found, err := selfupdate.DetectLatest(context.Background(), selfupdate.ParseSlug("softwarecitadel/cli"))
 	if err != nil {
 		return fmt.Errorf("error occurred while detecting version: %w", err)
@@ -39,7 +39,7 @@ func update(version string) error {
 		return nil
 	}
 
-	fmt.Printf("Updating to version %s...\n", latest.Version())
+	fmt.Printf("Current version (%s) is not the latest\nUpdating to version %s...\n", version, latest.Version())
 
 	exe, err := os.Executable()
 	if err != nil {

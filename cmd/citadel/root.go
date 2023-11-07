@@ -6,6 +6,7 @@ import (
 
 	"citadel/internal/auth"
 	"citadel/internal/util"
+
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +16,7 @@ var rootCmd = &cobra.Command{
 	Long:  "citadel - a simple CLI to interact with the Software Citadel PaaS",
 }
 
-func Execute() {
+func Execute(version string) {
 	loginCmd.Flags().StringP("token", "t", "", "Authentication token")
 
 	authCmd := &cobra.Command{
@@ -45,6 +46,7 @@ func Execute() {
 
 	rootCmd.AddCommand(authCmd)
 	rootCmd.AddCommand(envCmd)
+	rootCmd.AddCommand(MakeVersionCmd(version))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
