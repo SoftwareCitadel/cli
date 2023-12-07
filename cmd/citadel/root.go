@@ -48,6 +48,8 @@ func Execute(version string) {
 	rootCmd.AddCommand(envCmd)
 	rootCmd.AddCommand(MakeVersionCmd(version))
 
+	rootCmd.AddCommand(execCmd)
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "Whoops. There was an error while executing your CLI '%s'", err)
 		os.Exit(1)

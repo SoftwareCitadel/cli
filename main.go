@@ -35,7 +35,6 @@ func update() error {
 	}
 
 	if latest.Version() == version {
-		fmt.Printf("Current version (%s) is the latest\n", version)
 		return nil
 	}
 
