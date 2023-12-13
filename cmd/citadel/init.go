@@ -8,6 +8,7 @@ import (
 	"citadel/internal/cli"
 	"citadel/internal/tui"
 	"citadel/internal/util"
+
 	"github.com/spf13/cobra"
 )
 
@@ -41,9 +42,16 @@ func runInit(cmd *cobra.Command, args []string) {
 
 	if projectSlug == "" {
 		projectSlug = tui.SelectProject()
+		if projectSlug == "" {
+			projectSlug = tui.CreateProject()
+		}
 	}
+
 	if applicationSlug == "" {
 		applicationSlug = tui.SelectApplication(projectSlug)
+		if applicationSlug == "" {
+			applicationSlug = tui.CreateApplication(projectSlug)
+		}
 	}
 
 	err := util.InitializeConfigFile(projectSlug, applicationSlug)

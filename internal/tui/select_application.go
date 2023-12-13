@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"citadel/internal/api"
+
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -23,6 +24,11 @@ func newChooseApplicationPromptModel(projectSlug string) SelectModel {
 			Slug: application.Slug,
 		})
 	}
+	choices = append(choices, SelectChoice{
+		Name: "Create a new application",
+		ID:   "",
+		Slug: "",
+	})
 
 	return NewSelectModel("Which application would you like to deploy to?", choices)
 }

@@ -1,3 +1,3 @@
 package api
 
-var ApiBaseUrl string = "http://localhost:3333"
+var ApiBaseUrl string = "https://console.softwarecitadel.com"

@@ -50,12 +50,15 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		return
 	}
 
-	str := fmt.Sprintf("%d. %s", index+1, i.Name)
+	str := i.Name
+	if i.Slug != "" {
+		str = fmt.Sprintf("%d. %s", index+1, i.Name)
+	}
 
 	fn := itemStyle.Render
 	if index == m.Index() {
-		fn = func(s string) string {
-			return selectedItemStyle.Render("> " + s)
+		fn = func(strs ...string) string {
+			return selectedItemStyle.Render("> " + strs[0])
 		}
 	}
 
@@ -80,6 +83,7 @@ func (m SelectModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter":
 			c, ok := m.ListModel.SelectedItem().(SelectChoice)
+
 			if ok {
 				m.Choice = SelectChoice{ID: c.ID, Name: c.Name, Slug: c.Slug}
 			}
@@ -123,8 +127,9 @@ func NewSelectModel(title string, choices []SelectChoice) SelectModel {
 
 func (m SelectModel) Run() (SelectChoice, error) {
 	p := tea.NewProgram(m)
-	if err := p.Start(); err != nil {
+	res, err := p.Run()
+	if err != nil {
 		return SelectChoice{}, err
 	}
-	return m.Choice, nil
+	return res.(SelectModel).Choice, nil
 }

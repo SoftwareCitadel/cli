@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"citadel/internal/api"
-	tea "github.com/charmbracelet/bubbletea"
 )
 
 func newChooseProjectPromptModel() SelectModel {
@@ -23,16 +22,23 @@ func newChooseProjectPromptModel() SelectModel {
 			Slug: project.Slug,
 		})
 	}
+	choices = append(choices, SelectChoice{
+		Name: "Create a new project",
+		ID:   "",
+		Slug: "",
+	})
 
 	return NewSelectModel("Which project would you like to deploy to?", choices)
 }
 
 func SelectProject() string {
 	m := newChooseProjectPromptModel()
-	res, err := tea.NewProgram(m).Run()
+
+	choice, err := m.Run()
 	if err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}
-	return res.(SelectModel).Choice.Slug
+
+	return choice.Slug
 }

@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"citadel/internal/util"
+
 	"github.com/alevinval/sse/pkg/eventsource"
 )
 
@@ -91,6 +92,7 @@ func ShowBuildLogs(
 					os.Exit(1)
 				} else {
 					fmt.Println("🚀 Build succeeded. Deploying application...")
+					fmt.Println("🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectID + "/applications/" + applicationID + "/logs")
 					os.Exit(0)
 				}
 			}

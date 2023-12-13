@@ -1,27 +1,15 @@
 package cli
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/sveltinio/prompti/toggle"
+)
 
 func AskYesOrNo(question string) bool {
-	fmt.Println(question + " (y/n)")
+	result, _ := toggle.Run(&toggle.Config{Question: question})
 
-	var answer string
-
-	for answer != "y" && answer != "n" {
-		fmt.Scanln(&answer)
-
-		if answer == "y" {
-			return true
-		}
-
-		if answer == "n" {
-			return false
-		}
-
-		fmt.Println("Please answer with y or n")
-	}
-
-	return false
+	return result
 }
 
 func Ask(question string) string {
