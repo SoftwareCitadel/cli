@@ -8,6 +8,7 @@ import (
 	"runtime"
 
 	"citadel/internal/util"
+
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +28,7 @@ func runOpen(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	openBrowser("https://" + applicationId + ".citadel.app")
+	openBrowser("https://" + applicationId + ".softwarecitadel.app")
 }
 
 func openBrowser(url string) {

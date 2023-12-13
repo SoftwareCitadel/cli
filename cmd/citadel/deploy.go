@@ -7,6 +7,7 @@ import (
 	"citadel/internal/api"
 	"citadel/internal/auth"
 	"citadel/internal/util"
+
 	"github.com/spf13/cobra"
 )
 
@@ -29,6 +30,11 @@ func runDeploy(cmd *cobra.Command, args []string) {
 
 	if !util.IsAlreadyInitialized() {
 		fmt.Println("Software Citadel is not initialized. Please run `citadel init` to initialize it.")
+		return
+	}
+
+	if !checkDockerfileExists() {
+		fmt.Println("Dockerfile not found. Please create a Dockerfile in the root of your project.")
 		return
 	}
 
@@ -61,4 +67,12 @@ func runDeploy(cmd *cobra.Command, args []string) {
 	api.ShowBuildLogs(projectId, applicationId)
 
 	fmt.Println("Deployed!")
+}
+
+func checkDockerfileExists() bool {
+	if _, err := os.Stat("./Dockerfile"); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
 }
