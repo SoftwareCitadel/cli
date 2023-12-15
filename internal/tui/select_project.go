@@ -7,7 +7,7 @@ import (
 	"citadel/internal/api"
 )
 
-func newChooseProjectPromptModel() SelectModel {
+func newChooseProjectPromptModel(title string) SelectModel {
 	projects, err := api.RetrieveProjects()
 	if err != nil {
 		fmt.Println("Failed to retrieve projects")
@@ -28,11 +28,13 @@ func newChooseProjectPromptModel() SelectModel {
 		Slug: "",
 	})
 
-	return NewSelectModel("Which project would you like to deploy to?", choices)
+	return NewSelectModel(title, choices)
 }
 
-func SelectProject() string {
-	m := newChooseProjectPromptModel()
+func SelectProject(
+	title string,
+) string {
+	m := newChooseProjectPromptModel(title)
 
 	choice, err := m.Run()
 	if err != nil {

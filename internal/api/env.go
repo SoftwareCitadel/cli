@@ -11,15 +11,15 @@ import (
 )
 
 func RetrieveEnvironmentVariables(
-	projectId string,
-	applicationId string,
+	projectSlug string,
+	applicationSlug string,
 ) (map[string]string, error) {
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	url := ApiBaseUrl + "/api/projects/" + projectId + "/applications/" + applicationId + "/env"
+	url := ApiBaseUrl + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -53,8 +53,8 @@ func RetrieveEnvironmentVariables(
 }
 
 func SetEnvironmentVariable(
-	projectId string,
-	applicationId string,
+	projectSlug string,
+	applicationSlug string,
 	args []string,
 ) (bool, error) {
 	token, err := util.RetrieveTokenFromConfig()
@@ -82,7 +82,7 @@ func SetEnvironmentVariable(
 
 	body := bytes.NewBufferString(data)
 
-	url := ApiBaseUrl + "/projects/" + projectId + "/applications/" + applicationId + "/env"
+	url := ApiBaseUrl + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
 	req, err := http.NewRequest("PATCH", url, body)
 	if err != nil {
 		return false, err

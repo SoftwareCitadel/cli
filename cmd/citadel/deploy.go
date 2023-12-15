@@ -46,25 +46,25 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	projectId, err := util.RetrieveProjectIdFromProjectConfig()
+	projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve project id")
 		os.Exit(1)
 	}
 
-	applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
+	applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve application id")
 		os.Exit(1)
 	}
 
-	err = api.DeployFromTarball(tarball, projectId, applicationId)
+	err = api.DeployFromTarball(tarball, projectSlug, applicationSlug)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	api.ShowBuildLogs(projectId, applicationId)
+	api.ShowBuildLogs(projectSlug, applicationSlug)
 
 	fmt.Println("Deployed!")
 }

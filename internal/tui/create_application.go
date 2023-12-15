@@ -3,7 +3,6 @@ package tui
 import (
 	"citadel/internal/api"
 	"citadel/internal/util"
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -16,21 +15,10 @@ func CreateApplication(
 	projectSlug string,
 ) string {
 	questionPrompt := &input.Config{
-		Message:     "What's the name of your application?",
-		Placeholder: "webapp",
-		ErrorMsg:    "Please enter a valid application name",
-		ValidateFunc: func(s string) error {
-			if len(s) < 3 {
-				return errors.New("Application name must be at least 3 characters")
-			}
-			if len(s) > 50 {
-				return errors.New("Application name must be at most 50 characters")
-			}
-			if !util.IsSlug(s) {
-				return errors.New("Application name must be a valid slug")
-			}
-			return nil
-		},
+		Message:      "What's the name of your application?",
+		Placeholder:  "webapp",
+		ErrorMsg:     "Please enter a valid application name",
+		ValidateFunc: util.SlugValidateFunc,
 	}
 
 	applicationName, err := input.Run(questionPrompt)

@@ -14,7 +14,7 @@ import (
 	"github.com/alevinval/sse/pkg/eventsource"
 )
 
-func DeployFromTarball(tarball io.ReadCloser, projectId string, applicationId string) error {
+func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string) error {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
@@ -22,7 +22,7 @@ func DeployFromTarball(tarball io.ReadCloser, projectId string, applicationId st
 	}
 
 	// Create a new HTTP request
-	url := ApiBaseUrl + "/projects/" + projectId + "/applications/" + applicationId + "/deploy"
+	url := ApiBaseUrl + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/deploy"
 
 	// Create the request, sending the gzipBuf as a form data field named "tarball"
 	form := bytes.NewBuffer(nil)
@@ -64,11 +64,11 @@ func DeployFromTarball(tarball io.ReadCloser, projectId string, applicationId st
 }
 
 func ShowBuildLogs(
-	projectID string,
-	applicationID string,
+	projectSlug string,
+	applicationSlug string,
 ) {
 	baseURL := ApiBaseUrl
-	url := baseURL + "/projects/" + projectID + "/applications/" + applicationID + "/logs/stream?scope=builder"
+	url := baseURL + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs/stream?scope=builder"
 
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
@@ -92,7 +92,7 @@ func ShowBuildLogs(
 					os.Exit(1)
 				} else {
 					fmt.Println("🚀 Build succeeded. Deploying application...")
-					fmt.Println("🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectID + "/applications/" + applicationID + "/logs")
+					fmt.Println("🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs")
 					os.Exit(0)
 				}
 			}
@@ -105,8 +105,8 @@ func ShowBuildLogs(
 }
 
 func RedeployApplication(
-	projectID string,
-	applicationID string,
+	projectSlug string,
+	applicationSlug string,
 ) error {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
@@ -115,7 +115,7 @@ func RedeployApplication(
 	}
 
 	// Create a new HTTP request
-	url := ApiBaseUrl + "/api/projects/" + projectID + "/applications/" + applicationID + "/redeploy"
+	url := ApiBaseUrl + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/redeploy"
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

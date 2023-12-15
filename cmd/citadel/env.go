@@ -8,6 +8,7 @@ import (
 	"citadel/internal/cli"
 	"citadel/internal/tui"
 	"citadel/internal/util"
+
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/spf13/cobra"
 )
@@ -16,19 +17,19 @@ var envListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List environments",
 	Run: func(cmd *cobra.Command, args []string) {
-		projectId, err := util.RetrieveProjectIdFromProjectConfig()
+		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
-		applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
+		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
-		envs, err := api.RetrieveEnvironmentVariables(projectId, applicationId)
+		envs, err := api.RetrieveEnvironmentVariables(projectSlug, applicationSlug)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -50,13 +51,13 @@ var envSetCmd = &cobra.Command{
 	Short:   "Set environment",
 	Example: "citadel set DATABASE_URL=postgresql://username:password@host:5432/mydb",
 	Run: func(cmd *cobra.Command, args []string) {
-		projectId, err := util.RetrieveProjectIdFromProjectConfig()
+		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
-		applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
+		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -68,7 +69,7 @@ var envSetCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		showRedeployChoice, err := api.SetEnvironmentVariable(projectId, applicationId, args)
+		showRedeployChoice, err := api.SetEnvironmentVariable(projectSlug, applicationSlug, args)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -85,7 +86,7 @@ var envSetCmd = &cobra.Command{
 			return
 		}
 
-		err = api.RedeployApplication(projectId, applicationId)
+		err = api.RedeployApplication(projectSlug, applicationSlug)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

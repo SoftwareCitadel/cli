@@ -41,7 +41,7 @@ func runInit(cmd *cobra.Command, args []string) {
 	}
 
 	if projectSlug == "" {
-		projectSlug = tui.SelectProject()
+		projectSlug = tui.SelectProject("Which project would you like to deploy to?")
 		if projectSlug == "" {
 			projectSlug = tui.CreateProject()
 		}

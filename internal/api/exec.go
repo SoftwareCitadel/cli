@@ -9,8 +9,8 @@ import (
 )
 
 func ExecuteCommand(
-	projectId string,
-	applicationId string,
+	projectSlug string,
+	applicationSlug string,
 	command string,
 ) error {
 	token, err := util.RetrieveTokenFromConfig()
@@ -18,7 +18,7 @@ func ExecuteCommand(
 		return nil
 	}
 
-	url := ApiBaseUrl + "/api/projects/" + projectId + "/applications/" + applicationId + "/exec"
+	url := ApiBaseUrl + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
 
 	payload := []byte(`{"command": "` + command + `"}`)
 	body := bytes.NewBuffer(payload)

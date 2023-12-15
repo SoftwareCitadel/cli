@@ -22,13 +22,13 @@ func init() {
 }
 
 func runOpen(cmd *cobra.Command, args []string) {
-	applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
+	applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve application id")
 		os.Exit(1)
 	}
 
-	openBrowser("https://" + applicationId + ".softwarecitadel.app")
+	openBrowser("https://" + applicationSlug + ".softwarecitadel.app")
 }
 
 func openBrowser(url string) {

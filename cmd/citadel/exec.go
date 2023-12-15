@@ -22,13 +22,13 @@ func runExec(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	projectId, err := util.RetrieveProjectIdFromProjectConfig()
+	projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
+	applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -41,7 +41,7 @@ func runExec(cmd *cobra.Command, args []string) {
 
 	command := args[0]
 
-	err = api.ExecuteCommand(projectId, applicationId, command)
+	err = api.ExecuteCommand(projectSlug, applicationSlug, command)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

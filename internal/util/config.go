@@ -25,7 +25,7 @@ func RetrieveTokenFromConfig() (string, error) {
 	return token, nil
 }
 
-func RetrieveProjectIdFromProjectConfig() (string, error) {
+func RetrieveProjectSlugFromProjectConfig() (string, error) {
 	viper.SetConfigName("citadel")
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(".")
@@ -34,12 +34,12 @@ func RetrieveProjectIdFromProjectConfig() (string, error) {
 		return "", err
 	}
 
-	projectId := viper.GetString("project_id")
+	projectSlug := viper.GetString("project_id")
 
-	return projectId, nil
+	return projectSlug, nil
 }
 
-func RetrieveApplicationIdFromProjectConfig() (string, error) {
+func RetrieveApplicationSlugFromProjectConfig() (string, error) {
 	viper.SetConfigName("citadel")
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(".")
@@ -48,9 +48,9 @@ func RetrieveApplicationIdFromProjectConfig() (string, error) {
 		return "", err
 	}
 
-	applicationId := viper.GetString("application_id")
+	applicationSlug := viper.GetString("application_id")
 
-	return applicationId, nil
+	return applicationSlug, nil
 }
 
 func IsAlreadyInitialized() bool {

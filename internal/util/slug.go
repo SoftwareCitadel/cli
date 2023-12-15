@@ -1,5 +1,7 @@
 package util
 
+import "errors"
+
 func IsSlug(s string) bool {
 	for _, c := range s {
 		if isUppercase(c) {
@@ -22,4 +24,17 @@ func isNumber(c rune) bool {
 
 func isUppercase(c rune) bool {
 	return (c >= 'A' && c <= 'Z')
+}
+
+var SlugValidateFunc = func(s string) error {
+	if len(s) < 3 {
+		return errors.New("Application name must be at least 3 characters")
+	}
+	if len(s) > 50 {
+		return errors.New("Application name must be at most 50 characters")
+	}
+	if !IsSlug(s) {
+		return errors.New("Application name must be a valid slug")
+	}
+	return nil
 }
