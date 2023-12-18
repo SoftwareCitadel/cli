@@ -60,5 +60,5 @@ func runInit(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Println("Project initialized.")
+	fmt.Println("\nCongratulations! Your project is now initialized.")
 }

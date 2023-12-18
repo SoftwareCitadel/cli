@@ -52,7 +52,7 @@ func RetrieveEnvironmentVariables(
 	return response.Env, nil
 }
 
-func SetEnvironmentVariable(
+func SetEnvironmentVariables(
 	projectSlug string,
 	applicationSlug string,
 	args []string,

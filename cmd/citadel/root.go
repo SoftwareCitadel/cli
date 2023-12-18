@@ -43,6 +43,7 @@ func Execute(version string) {
 	}
 	envCmd.AddCommand(envListCmd)
 	envCmd.AddCommand(envSetCmd)
+	envCmd.AddCommand(envLoadCmd)
 
 	rootCmd.AddCommand(authCmd)
 	rootCmd.AddCommand(envCmd)
