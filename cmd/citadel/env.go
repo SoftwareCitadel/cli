@@ -63,9 +63,8 @@ var envSetCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Check if there is at least one argument
-		if len(args) > 1 {
-			fmt.Println("Please provide key and value")
+		if len(args) == 0 {
+			fmt.Println("Please provide a least a pair of key and value")
 			os.Exit(1)
 		}
 
@@ -75,7 +74,7 @@ var envSetCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Println("Environment variable set")
+		fmt.Println("Environment variable set.")
 
 		if !showRedeployChoice {
 			return

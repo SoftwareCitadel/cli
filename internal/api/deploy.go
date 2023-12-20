@@ -2,6 +2,7 @@ package api
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"mime/multipart"
@@ -14,11 +15,11 @@ import (
 	"github.com/alevinval/sse/pkg/eventsource"
 )
 
-func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string) error {
+func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string) (bool, error) {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	// Create a new HTTP request
@@ -29,20 +30,20 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 	writer := multipart.NewWriter(form)
 	part, err := writer.CreateFormFile("tarball", "tarball")
 	if err != nil {
-		return err
+		return false, err
 	}
 	_, err = io.Copy(part, tarball)
 	if err != nil {
-		return err
+		return false, err
 	}
 	err = writer.Close()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	req, err := http.NewRequest("POST", url, form)
 	if err != nil {
-		return err
+		return false, err
 	}
 	req.Header.Add("Content-Type", "multipart/form-data; boundary="+writer.Boundary())
 	req.Header.Add("Accept", "application/json")
@@ -52,15 +53,24 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return false, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("HTTP request failed with status code %d", resp.StatusCode)
+		return false, fmt.Errorf("HTTP request failed with status code %d", resp.StatusCode)
 	}
 
-	return nil
+	var response struct {
+		Healtcheck bool `json:"healtcheck"`
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		return false, err
+	}
+
+	return response.Healtcheck, nil
 }
 
 func ShowBuildLogs(
@@ -91,15 +101,13 @@ func ShowBuildLogs(
 					fmt.Println("🔴 Build failed.")
 					os.Exit(1)
 				} else {
-					fmt.Println("🚀 Build succeeded. Deploying application...")
-					fmt.Println("🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs")
-					os.Exit(0)
+					fmt.Println("\n🚀 Build succeeded. Deploying application...\n")
+					fmt.Println("\n🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs\n")
+					return
 				}
 			}
 
 			fmt.Println(event.Data)
-		case state := <-es.ReadyState():
-			fmt.Println(state)
 		}
 	}
 }

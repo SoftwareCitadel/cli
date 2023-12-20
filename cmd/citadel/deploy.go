@@ -6,6 +6,7 @@ import (
 
 	"citadel/internal/api"
 	"citadel/internal/auth"
+	"citadel/internal/tui"
 	"citadel/internal/util"
 
 	"github.com/spf13/cobra"
@@ -58,7 +59,7 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	err = api.DeployFromTarball(tarball, projectSlug, applicationSlug)
+	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, projectSlug, applicationSlug)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -66,7 +67,9 @@ func runDeploy(cmd *cobra.Command, args []string) {
 
 	api.ShowBuildLogs(projectSlug, applicationSlug)
 
-	fmt.Println("Deployed!")
+	if shouldMonitorHealtcheck {
+		tui.MonitorHealtcheck(projectSlug, applicationSlug)
+	}
 }
 
 func checkDockerfileExists() bool {

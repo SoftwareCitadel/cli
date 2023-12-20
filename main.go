@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"runtime"
 
@@ -12,10 +14,12 @@ import (
 )
 
 const (
-	version = "0.1.14"
+	version = "0.1.15"
 )
 
 func main() {
+	log.SetOutput(io.Discard)
+
 	err := update()
 	if err != nil {
 		fmt.Printf("error occurred while updating binary: %v\n", err)

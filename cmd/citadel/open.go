@@ -2,7 +2,6 @@ package citadel
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"runtime"
@@ -45,7 +44,7 @@ func openBrowser(url string) {
 		err = fmt.Errorf("unsupported platform")
 	}
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
-
 }
