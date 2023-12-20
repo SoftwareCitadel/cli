@@ -16,8 +16,7 @@ builds:
       - windows
       - darwin
     ldflags:
-      - -X 'citadel/internal/api.ApiBaseUrl=https://console.softwarecitadel.com'
-      - -X citadel/main.version={{.Version}}
+      - -X 'citadel/main.Version={{.Version}}'
 
 archives:
   - format: tar.gz

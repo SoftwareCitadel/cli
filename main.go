@@ -5,28 +5,24 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
-	"log"
 	"os"
 	"runtime"
 
 	"github.com/creativeprojects/go-selfupdate"
 )
 
-const (
-	version = "0.1.15"
+var (
+	Version = "dev"
 )
 
 func main() {
-	log.SetOutput(io.Discard)
-
 	err := update()
 	if err != nil {
 		fmt.Printf("error occurred while updating binary: %v\n", err)
 		os.Exit(1)
 	}
 
-	citadel.Execute(version)
+	citadel.Execute(Version)
 }
 
 func update() error {
@@ -38,11 +34,11 @@ func update() error {
 		return fmt.Errorf("latest version for %s/%s could not be found from github repository", runtime.GOOS, runtime.GOARCH)
 	}
 
-	if latest.Version() == version {
+	if latest.Version() == Version {
 		return nil
 	}
 
-	fmt.Printf("Current version (%s) is not the latest\nUpdating to version %s...\n", version, latest.Version())
+	fmt.Printf("Current version (%s) is not the latest\nUpdating to version %s...\n", Version, latest.Version())
 
 	exe, err := os.Executable()
 	if err != nil {
