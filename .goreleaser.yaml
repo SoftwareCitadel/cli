@@ -15,8 +15,6 @@ builds:
       - linux
       - windows
       - darwin
-    ldflags:
-      - -X 'citadel/main.Version={{.Version}}'
 
 archives:
   - format: tar.gz
