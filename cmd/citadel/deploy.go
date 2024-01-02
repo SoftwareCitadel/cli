@@ -34,11 +34,6 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	if !checkDockerfileExists() {
-		fmt.Println("Dockerfile not found. Please create a Dockerfile in the root of your project.")
-		return
-	}
-
 	fmt.Println("Deploying...")
 
 	tarball, err := util.MakeTarball()
@@ -70,12 +65,4 @@ func runDeploy(cmd *cobra.Command, args []string) {
 	if shouldMonitorHealtcheck {
 		tui.MonitorHealtcheck(projectSlug, applicationSlug)
 	}
-}
-
-func checkDockerfileExists() bool {
-	if _, err := os.Stat("./Dockerfile"); os.IsNotExist(err) {
-		return false
-	}
-
-	return true
 }
