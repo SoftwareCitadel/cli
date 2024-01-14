@@ -58,7 +58,7 @@ func CreateDatabase(projectSlug string) {
 
 	diskSize, err := input.Run(
 		&input.Config{
-			Message:     "How much disk space do you need for your database (in GB, between 1 and 100)?",
+			Message:     "How much disk space do you need for your database in GB, between 1 and 100 (volumes are billed at $0.50/GB/month)?",
 			Placeholder: "10",
 			ValidateFunc: func(s string) error {
 				if s == "" {
@@ -89,7 +89,7 @@ func CreateDatabase(projectSlug string) {
 		os.Exit(1)
 	}
 
-	fmt.Println("✅ Database created successfully!")
+	fmt.Println("✅\nDatabase created successfully!")
 
 	t := table.New(os.Stdout)
 
