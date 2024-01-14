@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"runtime"
 
@@ -12,10 +14,12 @@ import (
 )
 
 const (
-	version = "0.1.22"
+	version = "0.1.23"
 )
 
 func main() {
+	log.SetOutput(ioutil.Discard)
+
 	err := update()
 	if err != nil {
 		fmt.Printf("error occurred while updating binary: %v\n", err)

@@ -7,12 +7,8 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
-	"os"
-	"strings"
 
 	"citadel/internal/util"
-
-	"github.com/alevinval/sse/pkg/eventsource"
 )
 
 func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string) (bool, error) {
@@ -62,7 +58,7 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 	}
 
 	var response struct {
-		Healtcheck bool `json:"healtcheck"`
+		Healthcheck bool `json:"healthcheck"`
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&response)
@@ -70,46 +66,7 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 		return false, err
 	}
 
-	return response.Healtcheck, nil
-}
-
-func ShowBuildLogs(
-	projectSlug string,
-	applicationSlug string,
-) {
-	baseURL := ApiBaseUrl
-	url := baseURL + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs/stream?scope=builder"
-
-	token, err := util.RetrieveTokenFromConfig()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	es, err := eventsource.New(url, eventsource.WithBearerTokenAuth(token))
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	for {
-		select {
-		case event := <-es.MessageEvents():
-
-			if strings.Contains(event.Data, "Main child exited") {
-				if strings.Contains(event.Data, "Main child exited normally with code: 1") {
-					fmt.Println("🔴 Build failed.")
-					os.Exit(1)
-				} else {
-					fmt.Println("\n🚀 Build succeeded. Deploying application...\n")
-					fmt.Println("\n🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs\n")
-					return
-				}
-			}
-
-			fmt.Println(event.Data)
-		}
-	}
+	return response.Healthcheck, nil
 }
 
 func RedeployApplication(

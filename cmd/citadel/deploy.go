@@ -60,7 +60,7 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	api.ShowBuildLogs(projectSlug, applicationSlug)
+	tui.StreamBuildLogs(projectSlug, applicationSlug)
 
 	if shouldMonitorHealtcheck {
 		tui.MonitorHealtcheck(projectSlug, applicationSlug)
