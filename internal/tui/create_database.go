@@ -2,6 +2,7 @@ package tui
 
 import (
 	"citadel/internal/api"
+	"citadel/internal/cli"
 	"citadel/internal/util"
 	"fmt"
 	"os"
@@ -74,6 +75,21 @@ func CreateDatabase(projectSlug string) {
 	if err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
+	}
+
+	diskSizeInt, err := strconv.Atoi(diskSize)
+	if err != nil {
+		fmt.Println("Error running program:", err)
+		os.Exit(1)
+	}
+
+	pricePerMonth := float64(diskSizeInt)*0.5 + 6.38
+
+	fmt.Println("")
+
+	shouldCreate := cli.AskYesOrNo("This will create a " + diskSize + "GB " + dbms.Name + " database for $" + fmt.Sprintf("%.2f", pricePerMonth) + "/month. Do you want to continue?")
+	if !shouldCreate {
+		return
 	}
 
 	connectionString, databaseSlug, err := api.CreateDatabase(
