@@ -54,7 +54,13 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, projectSlug, applicationSlug)
+	releaseCommand, err := util.RetrieveReleaseCommandFromProjectConfig()
+	if err != nil {
+		fmt.Println("Failed to retrieve release command")
+		os.Exit(1)
+	}
+
+	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, projectSlug, applicationSlug, releaseCommand)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

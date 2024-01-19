@@ -11,7 +11,7 @@ import (
 	"citadel/internal/util"
 )
 
-func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string) (bool, error) {
+func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlug string, releaseCommand string) (bool, error) {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
@@ -33,6 +33,11 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 		return false, err
 	}
 	err = writer.Close()
+	if err != nil {
+		return false, err
+	}
+
+	err = writer.WriteField("releaseCommand", releaseCommand)
 	if err != nil {
 		return false, err
 	}

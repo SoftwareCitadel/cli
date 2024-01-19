@@ -64,6 +64,20 @@ func IsAlreadyInitialized() bool {
 	return err == nil
 }
 
+func RetrieveReleaseCommandFromProjectConfig() (string, error) {
+	viper.SetConfigName("citadel")
+	viper.SetConfigType("toml")
+	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		return "", err
+	}
+
+	releaseCommand := viper.GetString("release_command")
+
+	return releaseCommand, nil
+}
+
 func InitializeConfigFile(
 	projectName string,
 	applicationName string,
