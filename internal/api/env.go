@@ -73,6 +73,15 @@ func SetEnvironmentVariables(
 		key := splittedArg[0]
 		value := splittedArg[1]
 
+		// Remove single or double quotes to value
+		if strings.HasPrefix(value, "\"") && strings.HasSuffix(value, "\"") {
+			value = strings.TrimPrefix(value, "\"")
+			value = strings.TrimSuffix(value, "\"")
+		} else if strings.HasPrefix(value, "'") && strings.HasSuffix(value, "'") {
+			value = strings.TrimPrefix(value, "'")
+			value = strings.TrimSuffix(value, "'")
+		}
+
 		data += "\"" + key + "\":\"" + value + "\""
 		if i < len(args)-1 {
 			data += ","

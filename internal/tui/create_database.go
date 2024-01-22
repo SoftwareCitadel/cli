@@ -113,7 +113,7 @@ func CreateDatabase(projectSlug string) {
 	t.SetHeaderStyle(table.StyleBold)
 	t.SetAutoMergeHeaders(true)
 
-	t.AddRow("Host", databaseSlug+".internal")
+	t.AddRow("Host", "citadel-database-"+databaseSlug+".internal")
 	t.AddRow("Name", databaseSlug)
 	if dbms.ID == "postgres" || dbms.ID == "mysql" {
 		t.AddRow("Username", databaseUsername)

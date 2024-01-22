@@ -23,7 +23,7 @@ func RetrieveEnvironmentVariablesFromFile(path string) ([]string, error) {
 		line := scanner.Text()
 
 		// Skip comments and empty lines
-		if strings.HasPrefix(line, "#") || len(strings.TrimSpace(line)) == 0 {
+		if strings.HasPrefix(line, "#") || len(strings.TrimSpace(line)) == 0 || !strings.Contains(line, "=") {
 			continue
 		}
 
