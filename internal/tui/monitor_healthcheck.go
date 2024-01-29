@@ -18,7 +18,7 @@ func MonitorHealtcheck(
 	healthCheckStatus := "pending"
 
 	_ = spinner.New().Title("Waiting for healthcheck...").Action(func() {
-		url := api.ApiBaseUrl + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs/stream"
+		url := api.RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs/stream"
 
 		token, err := util.RetrieveTokenFromConfig()
 		if err != nil {

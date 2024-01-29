@@ -21,7 +21,7 @@ func CreateDatabase(
 		return "", "", nil
 	}
 
-	url := ApiBaseUrl + "/projects/" + projectSlug + "/databases"
+	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/databases"
 	payload := `{"name": "` + databaseName + `",`
 	payload += `"dbms": "` + dbms + `",`
 	payload += `"username": "` + databaseUsername + `",`

@@ -20,7 +20,7 @@ func StreamBuildLogs(
 	buildFailed := false
 
 	streamModel.Run(func(p *tea.Program) {
-		baseURL := api.ApiBaseUrl
+		baseURL := api.RetrieveApiBaseUrl()
 		url := baseURL + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs/stream?scope=builder"
 
 		token, err := util.RetrieveTokenFromConfig()
@@ -60,6 +60,6 @@ func StreamBuildLogs(
 		os.Exit(1)
 	} else {
 		fmt.Println("🚀 Build succeeded. Deploying application...")
-		fmt.Println("\n🔗 Monitor the deployment at https://console.softwarecitadel.com/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs\n")
+		fmt.Println("\n🔗 Monitor the deployment at " + api.RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/logs\n")
 	}
 }

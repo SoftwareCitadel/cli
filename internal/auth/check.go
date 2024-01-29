@@ -22,7 +22,7 @@ func IsLoggedIn() bool {
 }
 
 func checkAuthenticationTokenAgainstAPI(token string) bool {
-	url := api.ApiBaseUrl + "/auth/cli/check"
+	url := api.RetrieveApiBaseUrl() + "/auth/cli/check"
 	bearer := "Bearer " + token
 
 	req, err := http.NewRequest("GET", url, nil)

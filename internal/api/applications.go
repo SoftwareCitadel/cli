@@ -20,7 +20,7 @@ func RetrieveApplications(projectId string) ([]Application, error) {
 		return nil, err
 	}
 
-	url := ApiBaseUrl + "/projects/" + projectId + "/applications"
+	url := RetrieveApiBaseUrl() + "/projects/" + projectId + "/applications"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func CreateApplication(
 		return Application{}, err
 	}
 
-	url := ApiBaseUrl + "/projects/" + projectSlug + "/applications"
+	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications"
 	payload := `{"name": "` + applicationName + `",`
 	payload += `"cpu": "` + cpu + `",`
 	payload += `"ram": "` + memory + `"}`

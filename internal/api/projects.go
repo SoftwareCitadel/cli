@@ -28,7 +28,7 @@ func RetrieveProjects() ([]Project, error) {
 		return nil, err
 	}
 
-	url := ApiBaseUrl + "/projects"
+	url := RetrieveApiBaseUrl() + "/projects"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func CreateProject(projectName string) (Project, error) {
 		return Project{}, err
 	}
 
-	url := ApiBaseUrl + "/projects"
+	url := RetrieveApiBaseUrl() + "/projects"
 
 	payload := []byte(`{"name": "` + projectName + `"}`)
 	body := bytes.NewBuffer(payload)

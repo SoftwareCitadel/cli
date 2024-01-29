@@ -18,7 +18,7 @@ func ExecuteCommand(
 		return nil
 	}
 
-	url := ApiBaseUrl + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
+	url := RetrieveApiBaseUrl() + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
 
 	payload := []byte(`{"command": "` + command + `"}`)
 	body := bytes.NewBuffer(payload)

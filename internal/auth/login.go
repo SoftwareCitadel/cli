@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -21,13 +22,13 @@ type WaitForLoginResponse struct {
 }
 
 func GetAuthenticationSessionId() (string, error) {
-	resp, err := http.Get(api.ApiBaseUrl + "/auth/cli/session")
+	resp, err := http.Get(api.RetrieveApiBaseUrl() + "/auth/cli/session")
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -43,7 +44,7 @@ func GetAuthenticationSessionId() (string, error) {
 }
 
 func WaitForLogin(sessionId string) (string, error) {
-	resp, err := http.Get(api.ApiBaseUrl + "/auth/cli/" + sessionId + "/wait")
+	resp, err := http.Get(api.RetrieveApiBaseUrl() + "/auth/cli/" + sessionId + "/wait")
 	if err != nil {
 		fmt.Println("Whoops. There was an error while trying to get an authentication session.")
 		os.Exit(1)

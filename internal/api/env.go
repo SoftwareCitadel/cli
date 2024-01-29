@@ -19,7 +19,7 @@ func RetrieveEnvironmentVariables(
 		return nil, err
 	}
 
-	url := ApiBaseUrl + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
+	url := RetrieveApiBaseUrl() + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func SetEnvironmentVariables(
 
 	body := bytes.NewBufferString(data)
 
-	url := ApiBaseUrl + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
+	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
 	req, err := http.NewRequest("PATCH", url, body)
 	if err != nil {
 		return false, err
