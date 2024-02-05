@@ -45,6 +45,9 @@ func StreamBuildLogs(
 					p.Quit()
 				}
 				splitted := strings.Split(event.Data, " | ")
+				if len(splitted) != 2 {
+					continue
+				}
 				subtitle := splitted[0]
 				title := splitted[1]
 				p.Send(StreamModelResultMsg{

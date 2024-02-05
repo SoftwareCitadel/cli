@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"citadel/internal/util"
@@ -34,9 +33,8 @@ func RetrieveProjects() ([]Project, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Add("Authorization", "Bearer "+token)
 	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -46,7 +44,6 @@ func RetrieveProjects() ([]Project, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		fmt.Println(resp.StatusCode)
 		return nil, err
 	}
 
@@ -76,7 +73,6 @@ func CreateProject(projectName string) (Project, error) {
 
 	req.Header.Add("Authorization", "Bearer "+token)
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -86,7 +82,7 @@ func CreateProject(projectName string) (Project, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return Project{}, errors.New("An error occurred while creating the project.")
+		return Project{}, errors.New("an error occurred while creating the project")
 	}
 
 	var project Project

@@ -19,7 +19,7 @@ func DeployFromTarball(tarball io.ReadCloser, projectSlug string, applicationSlu
 	}
 
 	// Create a new HTTP request
-	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/deploy"
+	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/deployments"
 
 	// Create the request, sending the gzipBuf as a form data field named "tarball"
 	form := bytes.NewBuffer(nil)
