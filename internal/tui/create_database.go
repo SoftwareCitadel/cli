@@ -12,7 +12,7 @@ import (
 	"github.com/sveltinio/prompti/input"
 )
 
-func CreateDatabase(projectSlug string) {
+func CreateDatabase(organizationSlug string, projectSlug string) {
 	dbmsModel := newChooseDBMS()
 
 	dbms, err := dbmsModel.Run()
@@ -93,6 +93,7 @@ func CreateDatabase(projectSlug string) {
 	}
 
 	connectionString, databaseSlug, err := api.CreateDatabase(
+		organizationSlug,
 		projectSlug,
 		dbms.ID,
 		databaseName,

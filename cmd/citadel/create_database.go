@@ -25,10 +25,12 @@ func runCreateDatabase(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	projectSlug := tui.SelectProject("Select a project to create a database for")
+	orgSlug := tui.SelectOrganization()
+
+	projectSlug := tui.SelectProject(orgSlug, "Select a project to create a database for")
 	if projectSlug == "" {
-		projectSlug = tui.CreateProject()
+		projectSlug = tui.CreateProject(orgSlug)
 	}
 
-	tui.CreateDatabase(projectSlug)
+	tui.CreateDatabase(orgSlug, projectSlug)
 }

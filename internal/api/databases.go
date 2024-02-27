@@ -9,6 +9,7 @@ import (
 )
 
 func CreateDatabase(
+	organizationSlug string,
 	projectSlug string,
 	dbms string,
 	databaseName string,
@@ -21,7 +22,7 @@ func CreateDatabase(
 		return "", "", nil
 	}
 
-	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/databases"
+	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects/" + projectSlug + "/databases"
 	payload := `{"name": "` + databaseName + `",`
 	payload += `"dbms": "` + dbms + `",`
 	payload += `"username": "` + databaseUsername + `",`

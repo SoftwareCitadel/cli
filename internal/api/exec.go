@@ -9,6 +9,7 @@ import (
 )
 
 func ExecuteCommand(
+	organizationSlug string,
 	projectSlug string,
 	applicationSlug string,
 	command string,
@@ -18,7 +19,7 @@ func ExecuteCommand(
 		return nil
 	}
 
-	url := RetrieveApiBaseUrl() + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
+	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
 
 	payload := []byte(`{"command": "` + command + `"}`)
 	body := bytes.NewBuffer(payload)

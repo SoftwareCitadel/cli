@@ -14,13 +14,13 @@ type Application struct {
 	Slug string `json:"slug"`
 }
 
-func RetrieveApplications(projectId string) ([]Application, error) {
+func RetrieveApplications(organizationSlug string, projectSlug string) ([]Application, error) {
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/projects/" + projectId + "/applications"
+	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects/" + projectSlug + "/applications"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -50,6 +50,7 @@ func RetrieveApplications(projectId string) ([]Application, error) {
 }
 
 func CreateApplication(
+	orgSlug string,
 	projectSlug string,
 	applicationName string,
 	cpu string,
@@ -60,7 +61,7 @@ func CreateApplication(
 		return Application{}, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications"
+	url := RetrieveApiBaseUrl() + "/organizations/" + orgSlug + "/projects/" + projectSlug + "/applications"
 	payload := `{"name": "` + applicationName + `",`
 	payload += `"cpu": "` + cpu + `",`
 	payload += `"ram": "` + memory + `"}`

@@ -42,6 +42,12 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	orgSlug, err := util.RetrieveOrganizationSlugFromProjectConfig()
+	if err != nil {
+		fmt.Println("Failed to retrieve project id")
+		os.Exit(1)
+	}
+
 	projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve project id")
@@ -60,7 +66,7 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, projectSlug, applicationSlug, releaseCommand)
+	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, orgSlug, projectSlug, applicationSlug, releaseCommand)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

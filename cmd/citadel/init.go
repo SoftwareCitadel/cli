@@ -8,6 +8,7 @@ import (
 	"citadel/internal/cli"
 	"citadel/internal/tui"
 	"citadel/internal/util"
+	"citadel/internal/api"
 
 	"github.com/spf13/cobra"
 )
@@ -26,6 +27,7 @@ func init() {
 }
 
 func runInit(cmd *cobra.Command, args []string) {
+	organizationSlug, _ := cmd.Flags().GetString("organization")
 	projectSlug, _ := cmd.Flags().GetString("project")
 	applicationSlug, _ := cmd.Flags().GetString("application")
 
@@ -40,21 +42,31 @@ func runInit(cmd *cobra.Command, args []string) {
 		}
 	}
 
+	if organizationSlug == "" {
+		organizationSlug = tui.SelectOrganization()
+	}
+
 	if projectSlug == "" {
-		projectSlug = tui.SelectProject("Which project would you like to deploy to?")
+		projectSlug = tui.SelectProject(organizationSlug, "Which project would you like to deploy to?")
 		if projectSlug == "" {
-			projectSlug = tui.CreateProject()
+			projects, err := api.RetrieveProjects(organizationSlug)
+			if err != nil {
+				fmt.Println("Failed to retrieve projects")
+				os.Exit(1)
+			}
+			fmt.Println(projects)
+			// projectSlug = tui.CreateProject(organizationSlug)
 		}
 	}
 
 	if applicationSlug == "" {
-		applicationSlug = tui.SelectApplication(projectSlug)
+		applicationSlug = tui.SelectApplication(organizationSlug, projectSlug)
 		if applicationSlug == "" {
-			applicationSlug = tui.CreateApplication(projectSlug)
+			applicationSlug = tui.CreateApplication(organizationSlug, projectSlug)
 		}
 	}
 
-	err := util.InitializeConfigFile(projectSlug, applicationSlug)
+	err := util.InitializeConfigFile(organizationSlug, projectSlug, applicationSlug)
 	if err != nil {
 		fmt.Println("Failed to initialize Software Citadel project.")
 		return

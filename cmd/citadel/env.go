@@ -17,11 +17,17 @@ var envListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List environment variables",
 	Run: func(cmd *cobra.Command, args []string) {
-		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
+		orgSlug, err := util.RetrieveOrganizationSlugFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
+		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
 
 		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
 		if err != nil {
@@ -29,7 +35,7 @@ var envListCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		envs, err := api.RetrieveEnvironmentVariables(projectSlug, applicationSlug)
+		envs, err := api.RetrieveEnvironmentVariables(orgSlug, projectSlug, applicationSlug)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

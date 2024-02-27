@@ -21,13 +21,13 @@ type ProjectWithApplications struct {
 	Applications []Application `json:"applications"`
 }
 
-func RetrieveProjects() ([]Project, error) {
+func RetrieveProjects(organizationSlug string) ([]Project, error) {
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/projects"
+	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -56,13 +56,13 @@ func RetrieveProjects() ([]Project, error) {
 	return projects, nil
 }
 
-func CreateProject(projectName string) (Project, error) {
+func CreateProject(orgSlug string, projectName string) (Project, error) {
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
 		return Project{}, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/projects"
+	url := RetrieveApiBaseUrl() + "/organizations/" + orgSlug + "/projects"
 
 	payload := []byte(`{"name": "` + projectName + `"}`)
 	body := bytes.NewBuffer(payload)

@@ -9,8 +9,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func newChooseApplicationPromptModel(projectSlug string) SelectModel {
-	applications, err := api.RetrieveApplications(projectSlug)
+func newChooseApplicationPromptModel(organizationSlug string, projectSlug string) SelectModel {
+	applications, err := api.RetrieveApplications(organizationSlug, projectSlug)
 	if err != nil {
 		fmt.Println("Failed to retrieve applications")
 		os.Exit(1)
@@ -33,8 +33,8 @@ func newChooseApplicationPromptModel(projectSlug string) SelectModel {
 	return NewSelectModel("Which application would you like to deploy to?", choices)
 }
 
-func SelectApplication(projectSlug string) string {
-	m := newChooseApplicationPromptModel(projectSlug)
+func SelectApplication(organizationSlug string, projectSlug string) string {
+	m := newChooseApplicationPromptModel(organizationSlug, projectSlug)
 	res, err := tea.NewProgram(m).Run()
 	if err != nil {
 		fmt.Println("Error running program:", err)

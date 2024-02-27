@@ -11,6 +11,7 @@ import (
 )
 
 func RetrieveEnvironmentVariables(
+	organizationSlug string,
 	projectSlug string,
 	applicationSlug string,
 ) (map[string]string, error) {
@@ -19,7 +20,7 @@ func RetrieveEnvironmentVariables(
 		return nil, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
+	url := RetrieveApiBaseUrl() + "/api/organizations/" + organizationSlug+ "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err

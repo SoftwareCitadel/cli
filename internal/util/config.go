@@ -39,6 +39,20 @@ func RetrieveProjectSlugFromProjectConfig() (string, error) {
 	return projectSlug, nil
 }
 
+func RetrieveOrganizationSlugFromProjectConfig() (string, error) {
+	viper.SetConfigName("citadel")
+	viper.SetConfigType("toml")
+	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		return "", err
+	}
+
+	projectSlug := viper.GetString("organization_slug")
+
+	return projectSlug, nil
+}
+
 func RetrieveApplicationSlugFromProjectConfig() (string, error) {
 	viper.SetConfigName("citadel")
 	viper.SetConfigType("toml")
@@ -79,16 +93,18 @@ func RetrieveReleaseCommandFromProjectConfig() (string, error) {
 }
 
 func InitializeConfigFile(
-	projectName string,
-	applicationName string,
+	organizationSlug string,
+	projectSlug string,
+	applicationSlug string,
 ) error {
 	vi := viper.New()
 	vi.SetConfigName("citadel")
 	vi.AddConfigPath(".")
 	vi.SetConfigType("toml")
 
-	vi.Set("project_id", projectName)
-	vi.Set("application_id", applicationName)
+	vi.Set("organization_slug", organizationSlug)
+	vi.Set("project_slug", projectSlug)
+	vi.Set("application_slug", applicationSlug)
 
 	var fileExists bool
 

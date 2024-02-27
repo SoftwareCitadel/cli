@@ -7,8 +7,11 @@ import (
 	"citadel/internal/api"
 )
 
-func newChooseProjectPromptModel(title string) SelectModel {
-	projects, err := api.RetrieveProjects()
+func newChooseProjectPromptModel(
+	organizationSlug string,
+	title string,
+) SelectModel {
+	projects, err := api.RetrieveProjects(organizationSlug)
 	if err != nil {
 		fmt.Println("Failed to retrieve projects")
 		os.Exit(1)
@@ -32,9 +35,10 @@ func newChooseProjectPromptModel(title string) SelectModel {
 }
 
 func SelectProject(
+	organizationSlug string,
 	title string,
 ) string {
-	m := newChooseProjectPromptModel(title)
+	m := newChooseProjectPromptModel(organizationSlug, title)
 
 	choice, err := m.Run()
 	if err != nil {

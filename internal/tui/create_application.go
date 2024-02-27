@@ -12,6 +12,7 @@ import (
 )
 
 func CreateApplication(
+	orgSlug string,
 	projectSlug string,
 ) string {
 	questionPrompt := &input.Config{
@@ -38,7 +39,7 @@ func CreateApplication(
 	cpu := splittedChoice[0] + "x"
 	memory := splittedChoice[1]
 
-	application, err := api.CreateApplication(projectSlug, applicationName, cpu, memory)
+	application, err := api.CreateApplication(orgSlug, projectSlug, applicationName, cpu, memory)
 	if err != nil {
 		fmt.Println("\n🔴 " + err.Error())
 		os.Exit(1)

@@ -10,7 +10,7 @@ import (
 	"github.com/sveltinio/prompti/input"
 )
 
-func CreateProject() string {
+func CreateProject(orgSlug string) string {
 	questionPrompt := &input.Config{
 		Message:     "What's the name of your project?",
 		Placeholder: "acme-inc",
@@ -31,7 +31,7 @@ func CreateProject() string {
 
 	projectName, _ := input.Run(questionPrompt)
 
-	project, err := api.CreateProject(projectName)
+	project, err := api.CreateProject(orgSlug, projectName)
 	if err != nil {
 		fmt.Println("An error occurred while creating the project.")
 		os.Exit(1)
