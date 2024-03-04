@@ -12,7 +12,6 @@ import (
 	bspinner "github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
-	"github.com/sveltinio/prompti/input"
 )
 
 var loginCmd = &cobra.Command{
@@ -31,21 +30,6 @@ func runLogin(cmd *cobra.Command, args []string) {
 		}
 
 		return
-	}
-
-	consoleUrl, _ := cmd.Flags().GetString("console-url")
-	if consoleUrl != "" {
-		err := util.StoreConsoleUrl(consoleUrl)
-		if err != nil {
-			fmt.Println("Whoops. There was an error while trying to store your console URL.")
-			os.Exit(1)
-		}
-	} else {
-		err := askAndStoreConsoleUrl()
-		if err != nil {
-			fmt.Println("Whoops. There was an error while trying to store your console URL.")
-			os.Exit(1)
-		}
 	}
 
 	s := bspinner.New()
@@ -88,25 +72,6 @@ func runLoginTUI(msg tui.BasicSpinnerMessager) error {
 
 	msg.SetStatus("Storing authentication token...")
 	err = util.StoreJWTToken(token)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func askAndStoreConsoleUrl() error {
-	consoleUrl, err := input.Run(&input.Config{
-		Message:      "What's the console URL?",
-		Placeholder:  "https://console.softwarecitadel.com",
-		ErrorMsg:     "Please enter a valid console URL",
-		ValidateFunc: util.UrlValidateFunc,
-	})
-	if err != nil {
-		return err
-	}
-
-	err = util.StoreConsoleUrl(consoleUrl)
 	if err != nil {
 		return err
 	}

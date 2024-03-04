@@ -17,25 +17,13 @@ var envListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List environment variables",
 	Run: func(cmd *cobra.Command, args []string) {
-		orgSlug, err := util.RetrieveOrganizationSlugFromProjectConfig()
+		applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
-		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		envs, err := api.RetrieveEnvironmentVariables(orgSlug, projectSlug, applicationSlug)
+		envs, err := api.RetrieveEnvironmentVariables(applicationId)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -57,13 +45,7 @@ var envSetCmd = &cobra.Command{
 	Short:   "Set environment",
 	Example: "citadel set DATABASE_URL=postgresql://username:password@host:5432/mydb",
 	Run: func(cmd *cobra.Command, args []string) {
-		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
+		applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -74,7 +56,7 @@ var envSetCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		showRedeployChoice, err := api.SetEnvironmentVariables(projectSlug, applicationSlug, args)
+		showRedeployChoice, err := api.SetEnvironmentVariables(applicationId, args)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -91,7 +73,7 @@ var envSetCmd = &cobra.Command{
 			return
 		}
 
-		err = api.RedeployApplication(projectSlug, applicationSlug)
+		err = api.RedeployApplication(applicationId)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -106,13 +88,7 @@ var envLoadCmd = &cobra.Command{
 	Short:   "Load environment variables from file",
 	Example: "citadel load .env",
 	Run: func(cmd *cobra.Command, args []string) {
-		projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
+		applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -129,7 +105,7 @@ var envLoadCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		showRedeployChoice, err := api.SetEnvironmentVariables(projectSlug, applicationSlug, vars)
+		showRedeployChoice, err := api.SetEnvironmentVariables(applicationId, vars)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -146,7 +122,7 @@ var envLoadCmd = &cobra.Command{
 			return
 		}
 
-		err = api.RedeployApplication(projectSlug, applicationSlug)
+		err = api.RedeployApplication(applicationId)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

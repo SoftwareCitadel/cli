@@ -8,7 +8,6 @@ import (
 	"citadel/internal/cli"
 	"citadel/internal/tui"
 	"citadel/internal/util"
-	"citadel/internal/api"
 
 	"github.com/spf13/cobra"
 )
@@ -20,16 +19,13 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	initCmd.Flags().StringP("project", "p", "", "Project slug")
-	initCmd.Flags().StringP("application", "a", "", "Application slug")
+	initCmd.Flags().StringP("application-id", "a", "", "Application id to use for initialization (optional)")
 
 	rootCmd.AddCommand(initCmd)
 }
 
 func runInit(cmd *cobra.Command, args []string) {
-	organizationSlug, _ := cmd.Flags().GetString("organization")
-	projectSlug, _ := cmd.Flags().GetString("project")
-	applicationSlug, _ := cmd.Flags().GetString("application")
+	applicationId, _ := cmd.Flags().GetString("application-id")
 
 	if !auth.IsLoggedIn() {
 		fmt.Println("You must be logged in to initialize a project.\nPlease run `citadel auth login` to log in.")
@@ -42,31 +38,15 @@ func runInit(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	if organizationSlug == "" {
-		organizationSlug = tui.SelectOrganization()
-	}
-
-	if projectSlug == "" {
-		projectSlug = tui.SelectProject(organizationSlug, "Which project would you like to deploy to?")
-		if projectSlug == "" {
-			projects, err := api.RetrieveProjects(organizationSlug)
-			if err != nil {
-				fmt.Println("Failed to retrieve projects")
-				os.Exit(1)
-			}
-			fmt.Println(projects)
-			// projectSlug = tui.CreateProject(organizationSlug)
+	// Retrieve or create application
+	if applicationId == "" {
+		applicationId = tui.SelectApplication()
+		if applicationId == "" {
+			applicationId = tui.CreateApplication()
 		}
 	}
 
-	if applicationSlug == "" {
-		applicationSlug = tui.SelectApplication(organizationSlug, projectSlug)
-		if applicationSlug == "" {
-			applicationSlug = tui.CreateApplication(organizationSlug, projectSlug)
-		}
-	}
-
-	err := util.InitializeConfigFile(organizationSlug, projectSlug, applicationSlug)
+	err := util.InitializeConfigFile(applicationId)
 	if err != nil {
 		fmt.Println("Failed to initialize Software Citadel project.")
 		return

@@ -11,16 +11,14 @@ import (
 )
 
 func RetrieveEnvironmentVariables(
-	organizationSlug string,
-	projectSlug string,
-	applicationSlug string,
+	applicationId string,
 ) (map[string]string, error) {
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
 		return nil, err
 	}
 
-	url := RetrieveApiBaseUrl() + "/api/organizations/" + organizationSlug+ "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
+	url := RetrieveApiBaseUrl() + "/organizations/" + "/applications/" + applicationId + "/env"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -54,8 +52,7 @@ func RetrieveEnvironmentVariables(
 }
 
 func SetEnvironmentVariables(
-	projectSlug string,
-	applicationSlug string,
+	applicationId string,
 	args []string,
 ) (bool, error) {
 	token, err := util.RetrieveTokenFromConfig()
@@ -92,7 +89,7 @@ func SetEnvironmentVariables(
 
 	body := bytes.NewBufferString(data)
 
-	url := RetrieveApiBaseUrl() + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/env"
+	url := RetrieveApiBaseUrl() + "/applications/" + applicationId + "/env"
 	req, err := http.NewRequest("PATCH", url, body)
 	if err != nil {
 		return false, err
@@ -110,7 +107,7 @@ func SetEnvironmentVariables(
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return false, errors.New("Failed to set environment variable")
+		return false, errors.New("failed to set environment variable")
 	}
 
 	// Parse the response body { showRedeployChoice: true }

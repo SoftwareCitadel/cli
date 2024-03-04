@@ -9,9 +9,7 @@ import (
 )
 
 func ExecuteCommand(
-	organizationSlug string,
-	projectSlug string,
-	applicationSlug string,
+	applicationId string,
 	command string,
 ) error {
 	token, err := util.RetrieveTokenFromConfig()
@@ -19,7 +17,7 @@ func ExecuteCommand(
 		return nil
 	}
 
-	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/exec"
+	url := RetrieveApiBaseUrl() + "/applications/" + applicationId + "/exec"
 
 	payload := []byte(`{"command": "` + command + `"}`)
 	body := bytes.NewBuffer(payload)
@@ -42,7 +40,7 @@ func ExecuteCommand(
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 404 {
-		fmt.Println("No running container found.")
+		fmt.Println("No running deployment found.")
 		return nil
 	}
 

@@ -11,7 +11,7 @@ import (
 	"citadel/internal/util"
 )
 
-func DeployFromTarball(tarball io.ReadCloser, organizationSlug string, projectSlug string, applicationSlug string, releaseCommand string) (bool, error) {
+func DeployFromTarball(tarball io.ReadCloser, appId string, releaseCmd string) (bool, error) {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
 	if err != nil {
@@ -19,7 +19,7 @@ func DeployFromTarball(tarball io.ReadCloser, organizationSlug string, projectSl
 	}
 
 	// Create a new HTTP request
-	url := RetrieveApiBaseUrl() + "/organizations/" + organizationSlug + "/projects/" + projectSlug + "/applications/" + applicationSlug + "/deployments"
+	url := RetrieveApiBaseUrl() + "/applications/" + appId + "/deployments"
 
 	// Create the request, sending the gzipBuf as a form data field named "tarball"
 	form := bytes.NewBuffer(nil)
@@ -37,7 +37,7 @@ func DeployFromTarball(tarball io.ReadCloser, organizationSlug string, projectSl
 		return false, err
 	}
 
-	err = writer.WriteField("releaseCommand", releaseCommand)
+	err = writer.WriteField("releaseCommand", releaseCmd)
 	if err != nil {
 		return false, err
 	}
@@ -75,8 +75,7 @@ func DeployFromTarball(tarball io.ReadCloser, organizationSlug string, projectSl
 }
 
 func RedeployApplication(
-	projectSlug string,
-	applicationSlug string,
+	applicationId string,
 ) error {
 	// Retrieve the token from the config file
 	token, err := util.RetrieveTokenFromConfig()
@@ -85,7 +84,7 @@ func RedeployApplication(
 	}
 
 	// Create a new HTTP request
-	url := RetrieveApiBaseUrl() + "/api/projects/" + projectSlug + "/applications/" + applicationSlug + "/redeploy"
+	url := RetrieveApiBaseUrl() + "/api/applications/" + applicationId + "/redeploy"
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

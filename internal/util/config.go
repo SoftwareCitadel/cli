@@ -25,7 +25,7 @@ func RetrieveTokenFromConfig() (string, error) {
 	return token, nil
 }
 
-func RetrieveProjectSlugFromProjectConfig() (string, error) {
+func RetrieveApplicationIdFromProjectConfig() (string, error) {
 	viper.SetConfigName("citadel")
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(".")
@@ -34,37 +34,9 @@ func RetrieveProjectSlugFromProjectConfig() (string, error) {
 		return "", err
 	}
 
-	projectSlug := viper.GetString("project_id")
+	applicationId := viper.GetString("application_id")
 
-	return projectSlug, nil
-}
-
-func RetrieveOrganizationSlugFromProjectConfig() (string, error) {
-	viper.SetConfigName("citadel")
-	viper.SetConfigType("toml")
-	viper.AddConfigPath(".")
-
-	if err := viper.ReadInConfig(); err != nil {
-		return "", err
-	}
-
-	projectSlug := viper.GetString("organization_slug")
-
-	return projectSlug, nil
-}
-
-func RetrieveApplicationSlugFromProjectConfig() (string, error) {
-	viper.SetConfigName("citadel")
-	viper.SetConfigType("toml")
-	viper.AddConfigPath(".")
-
-	if err := viper.ReadInConfig(); err != nil {
-		return "", err
-	}
-
-	applicationSlug := viper.GetString("application_id")
-
-	return applicationSlug, nil
+	return applicationId, nil
 }
 
 func IsAlreadyInitialized() bool {
@@ -93,18 +65,14 @@ func RetrieveReleaseCommandFromProjectConfig() (string, error) {
 }
 
 func InitializeConfigFile(
-	organizationSlug string,
-	projectSlug string,
-	applicationSlug string,
+	applicationId string,
 ) error {
 	vi := viper.New()
 	vi.SetConfigName("citadel")
 	vi.AddConfigPath(".")
 	vi.SetConfigType("toml")
 
-	vi.Set("organization_slug", organizationSlug)
-	vi.Set("project_slug", projectSlug)
-	vi.Set("application_slug", applicationSlug)
+	vi.Set("application_id", applicationId)
 
 	var fileExists bool
 

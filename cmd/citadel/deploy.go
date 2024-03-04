@@ -34,7 +34,7 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Println("Deploying...")
+	fmt.Println("Uploading...")
 
 	tarball, err := util.MakeTarball()
 	if err != nil {
@@ -42,39 +42,27 @@ func runDeploy(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	orgSlug, err := util.RetrieveOrganizationSlugFromProjectConfig()
-	if err != nil {
-		fmt.Println("Failed to retrieve project id")
-		os.Exit(1)
-	}
-
-	projectSlug, err := util.RetrieveProjectSlugFromProjectConfig()
-	if err != nil {
-		fmt.Println("Failed to retrieve project id")
-		os.Exit(1)
-	}
-
-	applicationSlug, err := util.RetrieveApplicationSlugFromProjectConfig()
+	applicationId, err := util.RetrieveApplicationIdFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve application id")
 		os.Exit(1)
 	}
 
-	releaseCommand, err := util.RetrieveReleaseCommandFromProjectConfig()
+	releaseCmd, err := util.RetrieveReleaseCommandFromProjectConfig()
 	if err != nil {
 		fmt.Println("Failed to retrieve release command")
 		os.Exit(1)
 	}
 
-	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, orgSlug, projectSlug, applicationSlug, releaseCommand)
+	shouldMonitorHealtcheck, err := api.DeployFromTarball(tarball, applicationId, releaseCmd)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	tui.StreamBuildLogs(projectSlug, applicationSlug)
+	tui.StreamBuildLogs(applicationId)
 
 	if shouldMonitorHealtcheck {
-		tui.MonitorHealtcheck(projectSlug, applicationSlug)
+		tui.MonitorHealtcheck(applicationId)
 	}
 }

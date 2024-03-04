@@ -11,10 +11,7 @@ import (
 	"github.com/sveltinio/prompti/input"
 )
 
-func CreateApplication(
-	orgSlug string,
-	projectSlug string,
-) string {
+func CreateApplication() string {
 	questionPrompt := &input.Config{
 		Message:      "What's the name of your application?",
 		Placeholder:  "webapp",
@@ -39,13 +36,13 @@ func CreateApplication(
 	cpu := splittedChoice[0] + "x"
 	memory := splittedChoice[1]
 
-	application, err := api.CreateApplication(orgSlug, projectSlug, applicationName, cpu, memory)
+	application, err := api.CreateApplication(applicationName, cpu, memory)
 	if err != nil {
 		fmt.Println("\n🔴 " + err.Error())
 		os.Exit(1)
 	}
 
-	return application.Slug
+	return application.ID
 }
 
 func newChooseComputingSpecs() SelectModel {
